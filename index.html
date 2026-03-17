@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Nova Vida | Ex-Fumante</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #26a69a; /* Verde água */
+            --primary-dark: #00796b;
+            --bg: #e0f2f1; /* Fundo muito claro */
+            --card: #ffffff;
+            --text: #37474f;
+            --text-light: #78909c;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 420px;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin: 1rem;
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        p.subtitle {
+            color: var(--text-light);
+            text-align: center;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        button:disabled {
+            background-color: #b0bec5;
+            cursor: not-allowed;
+        }
+
+        #result-area {
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Estilos injetados pelo backend */
+        .result-card {
+            background: #f1f8e9;
+            border: 1px solid #c5e1a5;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .highlight {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 1.8rem;
+            display: block;
+            margin: 0.5rem 0;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 1rem;
+            text-align: left;
+        }
+        .stat-item {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        .stat-label { color: var(--text-light); display: block; font-size: 0.75rem; }
+        .stat-value { font-weight: 600; color: var(--text); }
+        .ai-message {
+            margin-top: 1.5rem;
+            font-style: italic;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            border-top: 1px solid #dcedc8;
+            padding-top: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Nova Vida</h1>
+    <p class="subtitle">Veja quanto você já ganhou parando de fumar.</p>
+
+    <form id="calcForm">
+        <div class="form-group">
+            <label>Cigarros fumados por dia (antes)</label>
+            <input type="number" id="cigsPerDay" placeholder="Ex: 20" required min="1">
+        </div>
+
+        <div class="form-group">
+            <label>Preço do maço (R$)</label>
+            <input type="number" id="packPrice" placeholder="Ex: 12.00" step="0.01" required min="1">
+        </div>
+
+        <div class="form-group">
+            <label>Data que parou</label>
+            <input type="date" id="startDate" required>
+        </div>
+
+        <button type="submit" id="btnCalc">Calcular Economia</button>
+    </form>
+
+    <div id="result-area"></div>
+</div>
+
+<script>
+    document.getElementById('calcForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const btn = document.getElementById('btnCalc');
+        const resultArea = document.getElementById('result-area');
+        
+        // Coleta dados
+        const cigsPerDay = document.getElementById('cigsPerDay').value;
+        const packPrice = document.getElementById('packPrice').value;
+        const startDate = document.getElementById('startDate').value;
+
+        // UI Loading
+        btn.disabled = true;
+        btn.innerText = "Calculando...";
+        resultArea.innerHTML = "";
+
+        try {
+            const response = await fetch('/api/ai', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cigsPerDay, packPrice, startDate })
+            });
+
+            const data = await response.json();
+
+            if (data.result) {
+                resultArea.innerHTML = data.result;
+            } else {
+                resultArea.innerHTML = "<p style='color:red; text-align:center'>Erro ao calcular.</p>";
+            }
+
+        } catch (error) {
+            console.error(error);
+            resultArea.innerHTML = "<p style='color:red; text-align:center'>Erro de conexão.</p>";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Calcular Economia";
+        }
+    });
+</script>
+
+</body>
+</html>
