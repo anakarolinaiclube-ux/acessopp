@@ -1,9 +1,9 @@
 {
-  "name": "petpoupanca",
+  "name": "petpoupanca-backend",
   "version": "1.0.0",
-  "description": "Pet virtual de poupança — alimente com dinheiro ou ele morre",
-  "main": "index.js",
-  "engines": {
-    "node": ">=18.x"
+  "description": "Backend IA para PetPoupança",
+  "dependencies": {
+    "openai": "^4.28.0",
+    "pdf-parse": "^1.1.1"
   }
 }
