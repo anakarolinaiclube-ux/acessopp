@@ -1139,28 +1139,38 @@ function clearPdf() {
 }
 
 // ════════════════════════════════════════
-// VERIFY PDF
+// VERIFY PDF (CORRIGIDO PARA MOSTRAR ERROS)
 // ════════════════════════════════════════
 async function verifyPdf() {
   if (st.dead)  { showToast('ressuscite o pet primeiro'); return; }
   if (!pdfB64)  { showToast('selecione um PDF'); return; }
 
-  const btn=document.getElementById('btn-verify');
-  btn.textContent='verificando…'; btn.disabled=true;
+  const btn = document.getElementById('btn-verify');
+  btn.textContent = 'verificando…'; 
+  btn.disabled = true;
 
-  const box=document.getElementById('verify-result');
-  box.className='verify-result';
+  const box = document.getElementById('verify-result');
+  box.className = 'verify-result';
 
   try {
     const res = await fetch('/api/ai', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ mode:'verify_pdf', pdf:pdfB64, expectedMin:cfg.monthlyGoal }),
+      method: 'POST', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'verify_pdf', pdf: pdfB64, expectedMin: cfg.monthlyGoal }),
     });
+    
+    // Se a Vercel der erro 500 (falta de API KEY, por exemplo), capturamos aqui:
+    if (!res.ok) {
+      throw new Error(`Erro do Servidor (Vercel): Código ${res.status}`);
+    }
+
     const data = await res.json();
-    box.textContent = data.message;
+    
+    // AJUSTE PRINCIPAL: Se não vier 'message', ele pega o 'error' ou dá um aviso padrão.
+    box.textContent = data.message || data.error || 'A IA recusou este comprovante ou o arquivo está ilegível.';
 
     if (data.verified && data.amount) {
-      box.className='verify-result visible ok';
+      box.className = 'verify-result visible ok';
       const val = data.amount;
       st.balance         += val;
       st.fedAmountMonth  += val;
@@ -1178,18 +1188,21 @@ async function verifyPdf() {
       }
       persist(); updateUI(); fetchBubble('deposit'); clearPdf();
 
-    } else if (data.amount !== null && data.amount < cfg.monthlyGoal) {
-      box.className='verify-result visible warn';
+    } else if (data.amount !== null && data.amount !== undefined && data.amount < cfg.monthlyGoal) {
+      box.className = 'verify-result visible warn';
       persist(); fetchBubble('deposit_below_min');
     } else {
-      box.className='verify-result visible err';
+      box.className = 'verify-result visible err';
       fetchBubble('deposit_rejected');
     }
-  } catch {
-    box.textContent='Erro ao verificar. Tente novamente.';
-    box.className='verify-result visible err';
+    
+  } catch (err) {
+    // Agora, se a sua IA falhar internamente, você verá o erro em texto!
+    console.error("Erro na verificação:", err);
+    box.textContent = 'Erro ao se conectar com a IA. Verifique os Logs (Functions) no painel da Vercel.';
+    box.className = 'verify-result visible err';
   } finally {
-    btn.textContent='verificar e alimentar';
+    btn.textContent = 'verificar e alimentar';
     btn.disabled = !pdfB64;
   }
 }
