@@ -6,44 +6,37 @@
   <title>PetPoupança</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Light Theme Moderno */
-      --bg:         #f8fafc;
-      --surface:    #ffffff;
-      --surface2:   #f1f5f9;
-      --surface3:   #e2e8f0;
-      --border:     rgba(15, 23, 42, 0.08);
-      --border-md:  rgba(15, 23, 42, 0.15);
-      
-      /* Cores de destaque (Estilo Fintech) */
-      --accent:     #6366f1; /* Indigo moderno */
-      --accent-dim: rgba(99, 102, 241, 0.1);
-      --accent-glow:rgba(99, 102, 241, 0.25);
-      
-      --green:      #10b981;
-      --green-dim:  rgba(16, 185, 129, 0.15);
-      --red:        #ef4444;
-      --red-dim:    rgba(239, 68, 68, 0.12);
-      --amber:      #f59e0b;
-      --amber-dim:  rgba(245, 158, 11, 0.15);
-      
-      --text:       #0f172a;
-      --text-2:     #475569;
-      --text-3:     #64748b;
-      
-      --radius-sm:  12px;
-      --radius:     20px;
-      --radius-lg:  28px;
-      --shadow:     0 12px 36px -8px rgba(15, 23, 42, 0.08);
-      --shadow-sm:  0 4px 12px -2px rgba(15, 23, 42, 0.05);
+      --bg:         #0d0d0f;
+      --surface:    #16171c;
+      --surface2:   #1e2028;
+      --surface3:   #252730;
+      --border:     rgba(255,255,255,0.07);
+      --border-md:  rgba(255,255,255,0.12);
+      --accent:     #7c6af7;
+      --accent-dim: rgba(124,106,247,0.15);
+      --accent-glow:rgba(124,106,247,0.35);
+      --green:      #34d07a;
+      --green-dim:  rgba(52,208,122,0.12);
+      --red:        #f25c54;
+      --red-dim:    rgba(242,92,84,0.12);
+      --amber:      #f0a500;
+      --amber-dim:  rgba(240,165,0,0.12);
+      --text:       #f0f0f5;
+      --text-2:     #9999b0;
+      --text-3:     #55556a;
+      --radius-sm:  10px;
+      --radius:     16px;
+      --radius-lg:  22px;
+      --shadow:     0 8px 32px rgba(0,0,0,0.45);
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100dvh;
@@ -54,91 +47,91 @@
     /* ─── AVATAR PICKER OVERLAY ─── */
     #avatar-picker {
       position: fixed; inset: 0; z-index: 300;
-      background: rgba(248, 250, 252, 0.85);
+      background: rgba(10,10,14,0.92);
       display: flex; align-items: center; justify-content: center;
       padding: 1rem;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(8px);
     }
     #avatar-picker.hidden { display: none; }
 
     .ap-card {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-md);
       border-radius: var(--radius-lg);
       padding: 2.5rem 2rem 2rem;
-      width: 100%; max-width: 420px;
+      width: 100%; max-width: 400px;
       box-shadow: var(--shadow);
     }
     .ap-eyebrow {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--accent);
       margin-bottom: 0.5rem;
     }
     .ap-title {
-      font-size: 1.6rem; font-weight: 600; line-height: 1.2;
-      color: var(--text); margin-bottom: 0.4rem; letter-spacing: -0.02em;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem; line-height: 1.2;
+      color: var(--text); margin-bottom: 0.4rem;
     }
-    .ap-sub { font-size: 0.85rem; color: var(--text-2); margin-bottom: 2rem; line-height: 1.5; font-weight: 400; }
+    .ap-sub { font-size: 0.85rem; color: var(--text-2); margin-bottom: 2rem; line-height: 1.5; }
 
     .ap-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 1.75rem; }
     .ap-option {
       background: var(--surface2);
-      border: 1.5px solid transparent;
+      border: 1.5px solid var(--border);
       border-radius: var(--radius);
       padding: 1.25rem 0.5rem 1rem;
       text-align: center; cursor: pointer;
-      transition: all 0.2s ease;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
     }
-    .ap-option:hover { background: var(--surface3); transform: translateY(-2px); }
+    .ap-option:hover { border-color: var(--border-md); transform: translateY(-2px); }
     .ap-option.selected {
       border-color: var(--accent);
-      background: var(--surface);
-      box-shadow: 0 4px 16px var(--accent-dim);
+      background: var(--accent-dim);
     }
     .ap-canvas { display: block; margin: 0 auto 0.75rem; }
-    .ap-label { font-size: 0.75rem; font-weight: 600; color: var(--text-2); }
+    .ap-label { font-size: 0.78rem; font-weight: 500; color: var(--text-2); }
     .ap-option.selected .ap-label { color: var(--accent); }
 
     .ap-goal-row {
-      display: flex; gap: 12px; align-items: center; margin-bottom: 1.5rem;
-      background: var(--surface2); padding: 6px 6px 6px 16px; border-radius: var(--radius-sm);
+      display: flex; gap: 10px; align-items: center; margin-bottom: 1.25rem;
     }
-    .ap-goal-label { font-size: 0.8rem; font-weight: 500; color: var(--text-2); white-space: nowrap; }
+    .ap-goal-label { font-size: 0.78rem; font-weight: 500; color: var(--text-2); white-space: nowrap; }
     .ap-goal-input {
-      flex: 1; background: var(--surface);
-      border: 1px solid transparent; border-radius: 8px;
-      padding: 10px 14px; font-family: 'Poppins', sans-serif;
-      font-size: 1rem; font-weight: 600; color: var(--text); outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      flex: 1; background: var(--surface2);
+      border: 1px solid var(--border-md); border-radius: var(--radius-sm);
+      padding: 9px 14px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem; font-weight: 500; color: var(--text); outline: none;
+      transition: border-color 0.2s;
     }
-    .ap-goal-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-    .ap-goal-input::placeholder { color: var(--text-3); font-weight: 400; }
+    .ap-goal-input:focus { border-color: var(--accent); }
+    .ap-goal-input::placeholder { color: var(--text-3); }
 
     .ap-btn {
       width: 100%; background: var(--accent); color: #fff;
       border: none; border-radius: var(--radius-sm);
-      padding: 14px; font-family: 'Poppins', sans-serif;
+      padding: 13px; font-family: 'DM Sans', sans-serif;
       font-size: 0.95rem; font-weight: 600; cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px var(--accent-dim);
+      transition: opacity 0.15s, transform 0.1s;
+      letter-spacing: 0.01em;
     }
-    .ap-btn:hover { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 6px 16px var(--accent-dim); }
+    .ap-btn:hover { opacity: 0.88; }
     .ap-btn:active { transform: scale(0.98); }
 
     /* ─── HEADER ─── */
     header { text-align: center; margin-bottom: 2.5rem; }
     .header-eyebrow {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em;
       text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem;
     }
     header h1 {
-      font-size: clamp(1.75rem, 5vw, 2.2rem);
-      color: var(--text); letter-spacing: -0.03em; font-weight: 700;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.75rem, 5vw, 2.4rem);
+      color: var(--text); letter-spacing: -0.01em; font-weight: 400;
     }
-    header p { font-size: 0.85rem; color: var(--text-2); margin-top: 4px; font-weight: 400; }
+    header p { font-size: 0.82rem; color: var(--text-2); margin-top: 6px; }
 
     /* ─── LAYOUT ─── */
-    .app { width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 1.25rem; }
+    .app { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 1rem; }
 
     /* ─── CARD ─── */
     .card {
@@ -150,154 +143,155 @@
 
     /* ─── PET CARD ─── */
     .pet-card {
-      padding: 2.5rem 1.5rem 2rem;
+      padding: 2rem 1.5rem 1.75rem;
       text-align: center; position: relative; overflow: hidden;
     }
+    /* subtle radial glow behind pet */
     .pet-card::before {
       content: ''; position: absolute;
-      top: -20px; left: 50%; transform: translateX(-50%);
+      top: 0; left: 50%; transform: translateX(-50%);
       width: 280px; height: 180px;
       background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
-      pointer-events: none; opacity: 0.6;
+      pointer-events: none; opacity: 0.4;
       transition: opacity 0.5s;
     }
-    .pet-card.danger::before { background: radial-gradient(ellipse, rgba(239, 68, 68, 0.15) 0%, transparent 70%); }
-    .pet-card.warn::before   { background: radial-gradient(ellipse, rgba(245, 158, 11, 0.15) 0%, transparent 70%); }
+    .pet-card.danger::before { background: radial-gradient(ellipse, rgba(242,92,84,0.35) 0%, transparent 70%); }
+    .pet-card.warn::before   { background: radial-gradient(ellipse, rgba(240,165,0,0.25) 0%, transparent 70%); }
 
     .pet-stage {
       position: relative; display: inline-block;
       margin-bottom: 1.25rem; transition: transform 0.4s;
     }
+    /* aura ring for high streak */
     .pet-stage.has-aura::after {
       content: '';
-      position: absolute; inset: -15px; border-radius: 50%;
-      border: 3px solid var(--accent);
-      opacity: 0.3;
+      position: absolute; inset: -10px; border-radius: 50%;
+      border: 2px solid var(--accent);
+      opacity: 0.4;
       animation: pulse-ring 2.5s ease-in-out infinite;
     }
     @keyframes pulse-ring {
-      0%, 100% { transform: scale(1); opacity: 0.3; }
-      50%       { transform: scale(1.08); opacity: 0.1; }
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50%       { transform: scale(1.08); opacity: 0.15; }
     }
 
     #petCanvas { display: block; transition: filter 0.4s; }
-    #petCanvas.dead { filter: grayscale(1) opacity(0.65); }
+    #petCanvas.dead { filter: grayscale(1) brightness(0.5); }
 
     .pet-name-row {
       display: flex; align-items: center; justify-content: center;
-      gap: 12px; margin-bottom: 0.75rem;
+      gap: 10px; margin-bottom: 0.5rem;
     }
     .pet-name {
-      font-size: 1.4rem; color: var(--text); font-weight: 600; letter-spacing: -0.02em;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem; color: var(--text); font-weight: 400;
     }
     .evolution-badge {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 4px 10px; border-radius: 99px;
-      background: var(--surface2); color: var(--accent); border: 1px solid var(--border);
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 99px;
+      background: var(--accent-dim); color: var(--accent);
     }
 
     /* life bar */
     .life-track {
-      max-width: 200px; margin: 0 auto 8px;
-      background: var(--surface2); border-radius: 99px;
-      height: 6px; overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      max-width: 220px; margin: 0 auto 6px;
+      background: var(--surface3); border-radius: 99px;
+      height: 5px; overflow: hidden;
     }
     .life-fill {
       height: 100%; border-radius: 99px;
       transition: width 0.7s cubic-bezier(.4,0,.2,1), background 0.4s;
     }
-    .life-hint { font-size: 0.75rem; font-weight: 500; color: var(--text-3); margin-bottom: 1.5rem; }
+    .life-hint { font-size: 0.68rem; color: var(--text-3); margin-bottom: 1.25rem; }
 
     /* speech bubble */
     .bubble {
       position: relative; display: inline-block;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 16px; padding: 0.8rem 1.2rem;
-      font-size: 0.85rem; font-weight: 500; line-height: 1.5;
+      background: var(--surface2); border: 1px solid var(--border-md);
+      border-radius: 12px; padding: 0.7rem 1rem;
+      font-size: 0.82rem; font-weight: 400; line-height: 1.5;
       color: var(--text-2); max-width: 300px; text-align: left;
-      transition: opacity 0.3s; box-shadow: var(--shadow-sm);
+      transition: opacity 0.3s;
     }
     .bubble::before {
-      content: ''; position: absolute; top: -8px; left: 50%;
-      transform: translateX(-50%);
-      border: 8px solid transparent;
-      border-bottom-color: var(--border); border-top: 0;
-    }
-    .bubble::after {
-      content: ''; position: absolute; top: -6px; left: 50%;
+      content: ''; position: absolute; top: -7px; left: 50%;
       transform: translateX(-50%);
       border: 7px solid transparent;
+      border-bottom-color: var(--border-md); border-top: 0;
+    }
+    .bubble::after {
+      content: ''; position: absolute; top: -5px; left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
       border-bottom-color: var(--surface2); border-top: 0;
     }
-    .bubble.loading { opacity: 0.5; font-style: italic; }
+    .bubble.loading { opacity: 0.4; font-style: italic; }
 
     /* dead overlay */
     .dead-overlay {
       display: none; position: absolute; inset: 0;
-      background: rgba(255, 255, 255, 0.9); border-radius: var(--radius-lg);
+      background: rgba(13,13,15,0.88); border-radius: var(--radius-lg);
       flex-direction: column; align-items: center; justify-content: center;
-      gap: 12px; backdrop-filter: blur(6px); z-index: 10;
+      gap: 12px; backdrop-filter: blur(4px);
     }
     .dead-overlay.visible { display: flex; }
-    .dead-glyph { font-size: 3rem; color: var(--text-3); opacity: 0.5; }
+    .dead-glyph { font-size: 2.5rem; }
     .dead-title {
-      font-size: 1.4rem; color: var(--red); font-weight: 600; letter-spacing: -0.02em;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem; color: var(--red);
     }
-    .dead-sub { font-size: 0.85rem; font-weight: 500; color: var(--text-2); }
+    .dead-sub { font-size: 0.78rem; color: var(--text-3); }
     .btn-revive {
-      background: var(--surface); color: var(--red);
-      border: 1.5px solid var(--red-dim); border-radius: var(--radius-sm);
-      padding: 10px 24px; font-family: 'Poppins', sans-serif;
+      background: transparent; color: var(--red);
+      border: 1px solid var(--red); border-radius: var(--radius-sm);
+      padding: 9px 22px; font-family: 'DM Sans', sans-serif;
       font-size: 0.85rem; font-weight: 600; cursor: pointer;
-      transition: all 0.15s; box-shadow: var(--shadow-sm);
-      margin-top: 8px;
+      transition: background 0.15s;
     }
-    .btn-revive:hover { background: var(--red-dim); border-color: var(--red); }
+    .btn-revive:hover { background: var(--red-dim); }
 
     /* ─── STATS ROW ─── */
     .stats-row {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
     }
     .stat {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.25rem 0.5rem;
-      text-align: center; box-shadow: var(--shadow-sm);
+      border-radius: var(--radius); padding: 1rem 0.5rem;
+      text-align: center; box-shadow: var(--shadow);
     }
     .stat-val {
-      font-size: 1.35rem; color: var(--text); font-weight: 600; line-height: 1;
-      letter-spacing: -0.02em;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem; color: var(--text); font-weight: 400; line-height: 1;
     }
     .stat-lbl {
-      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--text-3); margin-top: 8px;
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-3); margin-top: 5px;
     }
 
     /* ─── ACTIONS CARD ─── */
-    .actions-card { padding: 1.75rem 1.5rem; }
+    .actions-card { padding: 1.5rem; }
 
     .section-label {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--text-3); margin-bottom: 1rem;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 0.875rem;
     }
 
     /* goal strip */
     .goal-strip {
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 1.125rem;
-      margin-bottom: 1.5rem;
+      border-radius: var(--radius-sm); padding: 1rem 1.125rem;
+      margin-bottom: 1.25rem;
     }
     .goal-strip-top {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-    .goal-strip-amounts { font-size: 0.9rem; font-weight: 600; color: var(--text); }
-    .goal-strip-days    { font-size: 0.75rem; font-weight: 500; color: var(--text-3); }
+    .goal-strip-amounts { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .goal-strip-days    { font-size: 0.72rem; color: var(--text-3); }
 
     .goal-track {
       background: var(--surface3); border-radius: 99px;
-      height: 8px; overflow: hidden; margin-bottom: 10px;
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+      height: 6px; overflow: hidden; margin-bottom: 8px;
     }
     .goal-fill {
       height: 100%; border-radius: 99px;
@@ -310,10 +304,10 @@
     }
     .goal-lock-btn {
       background: none; border: none; cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em;
-      padding: 4px 10px; border-radius: 8px;
-      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.05em;
+      padding: 3px 8px; border-radius: 6px;
+      transition: background 0.15s;
     }
     .goal-lock-btn.unlocked { color: var(--accent); }
     .goal-lock-btn.unlocked:hover { background: var(--accent-dim); }
@@ -321,139 +315,136 @@
 
     /* inline edit form */
     .goal-edit-form {
-      display: none; margin-top: 14px; padding-top: 14px;
-      border-top: 1px dashed var(--border-md);
-      flex-direction: column; gap: 12px;
+      display: none; margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid var(--border);
+      flex-direction: column; gap: 10px;
     }
     .goal-edit-form.open { display: flex; }
     .goal-edit-row { display: flex; align-items: center; gap: 10px; }
-    .goal-edit-lbl { font-size: 0.75rem; font-weight: 600; color: var(--text-3); min-width: 80px; }
+    .goal-edit-lbl { font-size: 0.72rem; font-weight: 500; color: var(--text-3); min-width: 80px; }
     .goal-edit-input {
-      flex: 1; background: var(--surface);
-      border: 1px solid var(--border-md); border-radius: 8px;
-      padding: 8px 12px; font-family: 'Poppins', sans-serif;
-      font-size: 0.95rem; font-weight: 600; color: var(--text); outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      flex: 1; background: var(--surface3);
+      border: 1px solid var(--border-md); border-radius: var(--radius-sm);
+      padding: 7px 12px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 500; color: var(--text); outline: none;
+      transition: border-color 0.2s;
     }
-    .goal-edit-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-dim); }
+    .goal-edit-input:focus { border-color: var(--accent); }
     .goal-warning {
-      font-size: 0.75rem; font-weight: 500; color: #b45309; line-height: 1.4;
-      background: var(--amber-dim); border-radius: 8px; padding: 8px 12px;
-      border: 1px solid rgba(245, 158, 11, 0.2);
+      font-size: 0.7rem; color: var(--amber); line-height: 1.5;
+      background: var(--amber-dim); border-radius: 8px; padding: 7px 10px;
     }
     .goal-save-btn {
       background: var(--accent); color: white; border: none;
-      border-radius: 8px; padding: 10px 20px;
-      font-family: 'Poppins', sans-serif; font-size: 0.85rem; font-weight: 600;
+      border-radius: var(--radius-sm); padding: 8px 18px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600;
       cursor: pointer; align-self: flex-end;
-      transition: all 0.15s;
+      transition: opacity 0.15s;
     }
-    .goal-save-btn:hover { background: #4f46e5; }
+    .goal-save-btn:hover { opacity: 0.85; }
 
     /* pdf upload */
     .pdf-drop {
-      border: 2px dashed var(--border-md); border-radius: var(--radius-sm);
-      padding: 1.75rem 1rem; text-align: center; cursor: pointer;
-      transition: all 0.2s ease;
+      border: 1px dashed var(--border-md); border-radius: var(--radius-sm);
+      padding: 1.5rem 1rem; text-align: center; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
       background: var(--surface2); position: relative;
     }
     .pdf-drop:hover, .pdf-drop.dragover {
-      border-color: var(--accent); background: var(--surface);
-      box-shadow: 0 4px 16px var(--accent-dim);
+      border-color: var(--accent); background: var(--accent-dim);
     }
     .pdf-drop input[type=file] {
       position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
     }
-    .pdf-drop-icon  { font-size: 1.8rem; margin-bottom: 8px; color: var(--text-3); }
-    .pdf-drop-label { font-size: 0.85rem; font-weight: 600; color: var(--text-2); }
+    .pdf-drop-icon  { font-size: 1.5rem; margin-bottom: 6px; }
+    .pdf-drop-label { font-size: 0.8rem; font-weight: 500; color: var(--text-2); }
     .pdf-drop-label span { color: var(--accent); }
-    .pdf-drop-hint  { font-size: 0.7rem; font-weight: 500; color: var(--text-3); margin-top: 4px; }
+    .pdf-drop-hint  { font-size: 0.68rem; color: var(--text-3); margin-top: 3px; }
 
     .pdf-selected {
-      display: none; align-items: center; gap: 12px;
+      display: none; align-items: center; gap: 10px;
       background: var(--surface2); border-radius: var(--radius-sm);
-      padding: 12px 16px; border: 1px solid var(--border);
+      padding: 9px 14px; border: 1px solid var(--border-md);
     }
     .pdf-selected.visible { display: flex; }
     .pdf-file-name {
-      flex: 1; font-size: 0.85rem; font-weight: 600; color: var(--text-2);
+      flex: 1; font-size: 0.8rem; font-weight: 500; color: var(--text-2);
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     .pdf-clear {
-      background: var(--surface3); border: none; cursor: pointer;
-      width: 28px; height: 28px; border-radius: 50%;
-      font-size: 0.9rem; font-weight: 600; color: var(--text-3);
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
+      background: none; border: none; cursor: pointer;
+      font-size: 0.9rem; color: var(--text-3); line-height: 1;
+      transition: color 0.15s;
     }
-    .pdf-clear:hover { background: var(--red-dim); color: var(--red); }
+    .pdf-clear:hover { color: var(--red); }
 
     .verify-result {
-      border-radius: var(--radius-sm); padding: 10px 14px;
-      font-size: 0.8rem; font-weight: 500; line-height: 1.5;
-      margin-top: 12px; display: none; border: 1px solid transparent;
+      border-radius: var(--radius-sm); padding: 9px 13px;
+      font-size: 0.78rem; font-weight: 500; line-height: 1.5;
+      margin-top: 10px; display: none;
     }
     .verify-result.visible { display: block; }
-    .verify-result.ok   { background: var(--green-dim); color: #047857; border-color: rgba(16, 185, 129, 0.2); }
-    .verify-result.err  { background: var(--red-dim);   color: #b91c1c; border-color: rgba(239, 68, 68, 0.2); }
-    .verify-result.warn { background: var(--amber-dim); color: #b45309; border-color: rgba(245, 158, 11, 0.2); }
+    .verify-result.ok   { background: var(--green-dim); color: var(--green); }
+    .verify-result.err  { background: var(--red-dim);   color: var(--red); }
+    .verify-result.warn { background: var(--amber-dim); color: var(--amber); }
 
     /* verify btn */
     .btn-verify {
-      width: 100%; margin-top: 12px;
-      background: var(--text); color: white; border: none;
-      border-radius: var(--radius-sm); padding: 14px;
-      font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; transition: all 0.2s;
-      box-shadow: var(--shadow-sm);
+      width: 100%; margin-top: 10px;
+      background: var(--accent); color: white; border: none;
+      border-radius: var(--radius-sm); padding: 11px;
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+      letter-spacing: 0.01em;
     }
-    .btn-verify:hover  { background: var(--accent); transform: translateY(-1px); box-shadow: 0 6px 16px var(--accent-dim); }
+    .btn-verify:hover  { opacity: 0.88; }
     .btn-verify:active { transform: scale(0.98); }
-    .btn-verify:disabled { opacity: 0.4; pointer-events: none; background: var(--text-3); }
+    .btn-verify:disabled { opacity: 0.3; pointer-events: none; }
 
     /* month chip */
     .month-chip {
-      display: inline-flex; align-items: center; gap: 6px; justify-content: center;
-      margin-top: 16px; padding: 6px 14px; border-radius: 99px; width: 100%;
-      background: var(--surface2); font-size: 0.75rem; font-weight: 600; color: var(--text-3);
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 12px; padding: 4px 11px; border-radius: 99px;
+      background: var(--surface3); font-size: 0.68rem; font-weight: 500; color: var(--text-3);
     }
-    .month-chip.fed { background: var(--green-dim); color: #047857; }
+    .month-chip.fed { background: var(--green-dim); color: var(--green); }
 
     /* ─── TOAST ─── */
     .toast {
-      position: fixed; bottom: 2rem; left: 50%;
+      position: fixed; bottom: 1.75rem; left: 50%;
       transform: translateX(-50%) translateY(80px);
-      background: var(--text); color: white;
-      padding: 12px 24px; border-radius: 99px;
-      font-size: 0.85rem; font-weight: 500; white-space: nowrap;
+      background: var(--surface2); color: var(--text);
+      border: 1px solid var(--border-md);
+      padding: 10px 20px; border-radius: 99px;
+      font-size: 0.8rem; font-weight: 500; white-space: nowrap;
       box-shadow: var(--shadow);
       transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), opacity 0.3s;
-      opacity: 0; pointer-events: none; z-index: 1000;
+      opacity: 0; pointer-events: none; z-index: 100;
     }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
     /* calendar progress */
     .cal-strip {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.25rem 1.5rem;
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius); padding: 1rem 1.25rem;
+      box-shadow: var(--shadow);
     }
     .cal-header {
       display: flex; justify-content: space-between; align-items: baseline;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-    .cal-month { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
-    .cal-pct   { font-size: 1.1rem; font-weight: 600; color: var(--accent); letter-spacing: -0.02em; }
-    .cal-dots  { display: flex; gap: 5px; flex-wrap: wrap; }
+    .cal-month { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+    .cal-pct   { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--accent); }
+    .cal-dots  { display: flex; gap: 4px; flex-wrap: wrap; }
     .cal-dot   {
-      width: 12px; height: 12px; border-radius: 4px;
-      background: var(--surface3); transition: all 0.3s ease;
+      width: 10px; height: 10px; border-radius: 3px;
+      background: var(--surface3); transition: background 0.3s;
     }
     .cal-dot.passed  { background: var(--surface3); }
-    .cal-dot.today   { background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); transform: scale(1.1); }
+    .cal-dot.today   { background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); }
     .cal-dot.fed     { background: var(--green); }
-    .cal-dot.unfed   { background: var(--red); opacity: 0.8; }
-    .cal-dot.future  { background: var(--surface3); opacity: 0.5; }
+    .cal-dot.unfed   { background: var(--red); opacity: 0.5; }
+    .cal-dot.future  { background: var(--surface3); opacity: 0.3; }
   </style>
 </head>
 <body>
@@ -466,17 +457,17 @@
     <div class="ap-sub">Ele vai te cobrar todo mês. Escolha com carinho — e responsabilidade.</div>
 
     <div class="ap-grid">
-      <div class="ap-option selected" data-pet="platypus" onclick="selectPet(this)">
-        <canvas class="ap-canvas" id="preview-platypus" width="76" height="76"></canvas>
-        <div class="ap-label">Ornitorrinco</div>
+      <div class="ap-option selected" data-pet="cat" onclick="selectPet(this)">
+        <canvas class="ap-canvas" id="preview-cat" width="72" height="72"></canvas>
+        <div class="ap-label">Gato</div>
       </div>
-      <div class="ap-option" data-pet="horse" onclick="selectPet(this)">
-        <canvas class="ap-canvas" id="preview-horse" width="76" height="76"></canvas>
-        <div class="ap-label">Cavalo</div>
+      <div class="ap-option" data-pet="dog" onclick="selectPet(this)">
+        <canvas class="ap-canvas" id="preview-dog" width="72" height="72"></canvas>
+        <div class="ap-label">Cachorro</div>
       </div>
-      <div class="ap-option" data-pet="bird" onclick="selectPet(this)">
-        <canvas class="ap-canvas" id="preview-bird" width="76" height="76"></canvas>
-        <div class="ap-label">Pássaro</div>
+      <div class="ap-option" data-pet="bunny" onclick="selectPet(this)">
+        <canvas class="ap-canvas" id="preview-bunny" width="72" height="72"></canvas>
+        <div class="ap-label">Coelho</div>
       </div>
     </div>
 
@@ -508,7 +499,7 @@
     </div>
 
     <div class="pet-stage" id="pet-stage">
-      <canvas id="petCanvas" width="180" height="180"></canvas>
+      <canvas id="petCanvas" width="160" height="160"></canvas>
     </div>
 
     <div class="pet-name-row">
@@ -579,14 +570,14 @@
     <!-- pdf upload -->
     <div class="pdf-drop" id="pdf-drop"
          ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-      <input type="file" accept="application/pdf" id="pdf-input" onchange="onFileChange(event)" />
+      <input type="file" accept="application/pdf,image/jpeg,image/png,image/webp" id="pdf-input" onchange="onFileChange(event)" />
       <div class="pdf-drop-icon">📄</div>
-      <div class="pdf-drop-label">arraste o extrato ou <span>clique aqui</span></div>
-      <div class="pdf-drop-hint">PDF do seu banco — extrato ou comprovante de depósito</div>
+      <div class="pdf-drop-label">arraste o comprovante ou <span>clique aqui</span></div>
+      <div class="pdf-drop-hint">PDF, JPG ou PNG — extrato ou comprovante do banco</div>
     </div>
 
     <div class="pdf-selected" id="pdf-selected">
-      <span style="font-size:1.1rem">📎</span>
+      <span style="font-size:.85rem">📎</span>
       <span class="pdf-file-name" id="pdf-file-name"></span>
       <button class="pdf-clear" onclick="clearPdf()">✕</button>
     </div>
@@ -609,9 +600,8 @@
 // ════════════════════════════════════════
 const LOCK_MS = 3 * 24 * 60 * 60 * 1000;
 
-// Novos Nomes dos Pets Especiais
-const PET_NAMES = { platypus: 'Darwin', horse: 'Trovão', bird: 'Pistache' };
-const EVO_STAGES =[
+const PET_NAMES    = { cat: 'Mingau', dog: 'Farofa', bunny: 'Bolinha' };
+const EVO_STAGES   = [
   { label: 'filhote',   minStreak: 0, scale: 0.55 },
   { label: 'crescendo', minStreak: 2, scale: 0.70 },
   { label: 'jovem',     minStreak: 4, scale: 0.85 },
@@ -646,8 +636,8 @@ let st = load('pp_state', {
   fedThisMonth:   false,
   fedAmountMonth: 0,
   dead:           false,
-  lastMonthKey:   null,
-  feedDays:[],
+  lastMonthKey:   null,   // "YYYY-MM" — detect month rollover
+  feedDays:       [],     // array of day-of-month numbers when user fed
 });
 
 function persist() {
@@ -656,16 +646,18 @@ function persist() {
 }
 
 // ════════════════════════════════════════
-// TIME HELPERS
+// TIME HELPERS  (real calendar)
 // ════════════════════════════════════════
 function todayKey()     { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
 function daysInMonth()  { const d=new Date(); return new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); }
 function dayOfMonth()   { return new Date().getDate(); }
 function daysRemaining(){ return daysInMonth() - dayOfMonth(); }
 
+// Check if month rolled over since last visit
 function checkMonthRollover() {
   const key = todayKey();
   if (st.lastMonthKey && st.lastMonthKey !== key) {
+    // new month — evaluate if goal was met
     if (!st.fedThisMonth || st.fedAmountMonth < cfg.monthlyGoal) {
       st.health  = Math.max(0, st.health - 38);
       st.streak  = 0;
@@ -673,17 +665,20 @@ function checkMonthRollover() {
     }
     st.fedThisMonth   = false;
     st.fedAmountMonth = 0;
-    st.feedDays       =[];
+    st.feedDays       = [];
   }
   st.lastMonthKey = key;
   persist();
 }
 
+// Daily health decay (called on page load based on days since last visit)
 function applyDecay() {
+  // decay only applies when not yet fed this month
   if (st.dead || st.fedThisMonth) return;
   const total = daysInMonth();
-  const daysPassed = dayOfMonth() - 1;
-  const expectedLoss = (daysPassed / total) * 55;
+  const daysPassed = dayOfMonth() - 1; // days elapsed in current month
+  const expectedLoss = (daysPassed / total) * 55; // up to 55% loss by end of month if no feed
+  // calculate how much should already be lost, subtract current shortfall
   const targetHealth = Math.max(5, 100 - expectedLoss);
   if (st.health > targetHealth) st.health = targetHealth;
   persist();
@@ -692,7 +687,7 @@ function applyDecay() {
 // ════════════════════════════════════════
 // AVATAR PICKER
 // ════════════════════════════════════════
-let selectedPetType = 'platypus';
+let selectedPetType = 'cat';
 
 function selectPet(el) {
   document.querySelectorAll('.ap-option').forEach(o => o.classList.remove('selected'));
@@ -711,7 +706,7 @@ function confirmPicker() {
 }
 
 // ════════════════════════════════════════
-// PET DRAWING (Especiais Fofinhos)
+// PET DRAWING
 // ════════════════════════════════════════
 function getEvoStage(streak) {
   let stage = EVO_STAGES[0];
@@ -719,187 +714,153 @@ function getEvoStage(streak) {
   return stage;
 }
 
-/* ── ORNITORRINCO (Platypus) ── */
-function drawPlatypus(ctx, cx, cy, sz, mood) {
+/* ── CAT ── */
+function drawCat(ctx, cx, cy, sz, mood) {
   const s = sz;
-  const body = mood==='dead'?'#cbd5e1':mood==='happy'?'#2dd4bf':mood==='worried'?'#5eead4':'#14b8a6';
-  const bill = mood==='dead'?'#94a3b8':'#fb923c';
-  const tail = mood==='dead'?'#64748b':'#78350f';
+  const body = mood==='dead'?'#3a3a4a':mood==='happy'?'#a89ddb':mood==='worried'?'#8880be':'#6b63a8';
+  const fur  = mood==='dead'?'#2a2a3a':body;
 
-  // Cauda de castor (achatada e para o lado)
-  ctx.fillStyle = tail;
-  ctx.beginPath(); ctx.ellipse(cx+s*0.35, cy+s*0.25, s*0.2, s*0.08, Math.PI/5, 0, Math.PI*2); ctx.fill();
+  // tail
+  ctx.strokeStyle=fur; ctx.lineWidth=s*0.09; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(cx+s*0.28,cy+s*0.22);
+  ctx.quadraticCurveTo(cx+s*0.52,cy,cx+s*0.42,cy-s*0.22); ctx.stroke();
 
-  // Corpo redondo
-  ctx.fillStyle = body;
-  ctx.beginPath(); ctx.ellipse(cx, cy+s*0.2, s*0.35, s*0.25, 0, 0, Math.PI*2); ctx.fill();
+  // body
+  ctx.fillStyle=body;
+  ctx.beginPath(); ctx.ellipse(cx,cy+s*0.18,s*0.30,s*0.27,0,0,Math.PI*2); ctx.fill();
 
-  // Cabeça
-  ctx.beginPath(); ctx.arc(cx, cy+s*0.02, s*0.26, 0, Math.PI*2); ctx.fill();
+  // head
+  ctx.beginPath(); ctx.arc(cx,cy,s*0.24,0,Math.PI*2); ctx.fill();
 
-  // Bico de Pato Achatado (Desenhado antes do rosto)
-  ctx.fillStyle = bill;
-  ctx.beginPath(); ctx.ellipse(cx, cy+s*0.14, s*0.2, s*0.1, 0, 0, Math.PI*2); ctx.fill();
-  
-  // Detalhe no bico (linha suave no meio)
-  ctx.strokeStyle = 'rgba(0,0,0,0.1)'; ctx.lineWidth=s*0.015;
-  ctx.beginPath(); ctx.moveTo(cx-s*0.1, cy+s*0.12); ctx.lineTo(cx+s*0.1, cy+s*0.12); ctx.stroke();
-
-  _drawFace(ctx, cx, cy, s, mood, 'platypus');
-}
-
-/* ── CAVALO ── */
-function drawHorse(ctx, cx, cy, sz, mood) {
-  const s = sz;
-  const body = mood==='dead'?'#d6d3d1':mood==='happy'?'#d97706':mood==='worried'?'#fcd34d':'#b45309';
-  const mane = mood==='dead'?'#78716c':'#451a03';
-  const snout = mood==='dead'?'#e7e5e4':'#fde68a';
-
-  // Cauda esvoaçante
-  ctx.strokeStyle = mane; ctx.lineWidth=s*0.12; ctx.lineCap='round';
-  ctx.beginPath(); ctx.moveTo(cx+s*0.28, cy+s*0.15); 
-  ctx.quadraticCurveTo(cx+s*0.5, cy+s*0.2, cx+s*0.38, cy+s*0.38); ctx.stroke();
-
-  // Corpo
-  ctx.fillStyle = body;
-  ctx.beginPath(); ctx.ellipse(cx, cy+s*0.28, s*0.32, s*0.25, 0, 0, Math.PI*2); ctx.fill();
-
-  // Crina (nas costas do pescoço)
-  ctx.fillStyle = mane;
-  ctx.beginPath(); ctx.ellipse(cx-s*0.15, cy-s*0.05, s*0.12, s*0.25, -0.2, 0, Math.PI*2); ctx.fill();
-
-  // Cabeça (alongada)
-  ctx.fillStyle = body;
-  ctx.beginPath(); ctx.ellipse(cx, cy, s*0.24, s*0.32, 0.05, 0, Math.PI*2); ctx.fill();
-
-  // Orelhas pontudas
-  ctx.beginPath(); ctx.moveTo(cx-s*0.15, cy-s*0.2); ctx.lineTo(cx-s*0.2, cy-s*0.4); ctx.lineTo(cx-s*0.05, cy-s*0.3); ctx.fill();
-  ctx.beginPath(); ctx.moveTo(cx+s*0.05, cy-s*0.3); ctx.lineTo(cx+s*0.15, cy-s*0.42); ctx.lineTo(cx+s*0.18, cy-s*0.2); ctx.fill();
-
-  // Focinho
-  ctx.fillStyle = snout;
-  ctx.beginPath(); ctx.ellipse(cx, cy+s*0.18, s*0.18, s*0.16, 0, 0, Math.PI*2); ctx.fill();
-
-  // Narinas
-  ctx.fillStyle = mood==='dead'?'#a8a29e':'#78350f';
-  ctx.beginPath(); ctx.ellipse(cx-s*0.06, cy+s*0.18, s*0.02, s*0.03, -0.2, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+s*0.06, cy+s*0.18, s*0.02, s*0.03, 0.2, 0, Math.PI*2); ctx.fill();
-
-  // No cavalo, subimos um pouco a altura dos olhos para o focinho se destacar embaixo
-  _drawFace(ctx, cx, cy-s*0.04, s*0.9, mood, 'horse');
-}
-
-/* ── PÁSSARO (Bird) ── */
-function drawBird(ctx, cx, cy, sz, mood) {
-  const s = sz;
-  const body = mood==='dead'?'#cbd5e1':mood==='happy'?'#38bdf8':mood==='worried'?'#bae6fd':'#0284c7';
-  const belly = mood==='dead'?'#f1f5f9':'#e0f2fe';
-  const beak = mood==='dead'?'#94a3b8':'#fbbf24';
-
-  // Peninhas do rabo
-  ctx.fillStyle = body;
-  ctx.beginPath(); ctx.ellipse(cx+s*0.25, cy+s*0.25, s*0.15, s*0.05, Math.PI/4, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+s*0.28, cy+s*0.2, s*0.15, s*0.05, Math.PI/6, 0, Math.PI*2); ctx.fill();
-
-  // Corpo principal (redondão)
-  ctx.beginPath(); ctx.arc(cx, cy+s*0.12, s*0.32, 0, Math.PI*2); ctx.fill();
-
-  // Barriguinha gordinha
-  ctx.fillStyle = belly;
-  ctx.beginPath(); ctx.arc(cx, cy+s*0.16, s*0.26, 0, Math.PI); ctx.fill();
-
-  // Asinhas nas laterais
-  ctx.fillStyle = body;
-  ctx.beginPath(); ctx.ellipse(cx-s*0.26, cy+s*0.1, s*0.06, s*0.16, 0.2, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+s*0.26, cy+s*0.1, s*0.06, s*0.16, -0.2, 0, Math.PI*2); ctx.fill();
-
-  // Topetinho estiloso
-  ctx.beginPath(); ctx.ellipse(cx, cy-s*0.22, s*0.04, s*0.08, -0.2, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+s*0.05, cy-s*0.2, s*0.03, s*0.06, 0.2, 0, Math.PI*2); ctx.fill();
-
-  _drawFace(ctx, cx, cy-s*0.02, s, mood, 'bird');
-
-  // Bico triangular (Desenhado por cima da face)
-  ctx.fillStyle = beak;
+  // ears — pointed
   ctx.beginPath();
-  if (mood==='worried' || mood==='dying') {
-    ctx.moveTo(cx-s*0.06, cy+s*0.08); ctx.lineTo(cx+s*0.06, cy+s*0.08); ctx.lineTo(cx, cy+s*0.14);
-  } else {
-    ctx.moveTo(cx-s*0.08, cy+s*0.06); ctx.lineTo(cx+s*0.08, cy+s*0.06); ctx.lineTo(cx, cy+s*0.14);
-  }
-  ctx.fill();
+  ctx.moveTo(cx-s*0.18,cy-s*0.19); ctx.lineTo(cx-s*0.26,cy-s*0.38); ctx.lineTo(cx-s*0.07,cy-s*0.22); ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(cx+s*0.18,cy-s*0.19); ctx.lineTo(cx+s*0.26,cy-s*0.38); ctx.lineTo(cx+s*0.07,cy-s*0.22); ctx.closePath(); ctx.fill();
+
+  // inner ears
+  ctx.fillStyle = mood==='dead'?'#4a4a5a':'#d4b8f0';
+  ctx.beginPath();
+  ctx.moveTo(cx-s*0.17,cy-s*0.22); ctx.lineTo(cx-s*0.22,cy-s*0.33); ctx.lineTo(cx-s*0.10,cy-s*0.24); ctx.closePath(); ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(cx+s*0.17,cy-s*0.22); ctx.lineTo(cx+s*0.22,cy-s*0.33); ctx.lineTo(cx+s*0.10,cy-s*0.24); ctx.closePath(); ctx.fill();
+
+  _drawFace(ctx, cx, cy, s, mood, 'cat');
+}
+
+/* ── DOG ── */
+function drawDog(ctx, cx, cy, sz, mood) {
+  const s = sz;
+  const body = mood==='dead'?'#4a3e2e':mood==='happy'?'#d4a85a':mood==='worried'?'#b88c44':'#8a6832';
+
+  // tail — wagging shape
+  ctx.strokeStyle=body; ctx.lineWidth=s*0.1; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(cx+s*0.26,cy+s*0.1);
+  ctx.quadraticCurveTo(cx+s*0.48,cy-s*0.08,cx+s*0.36,cy-s*0.24); ctx.stroke();
+
+  // body
+  ctx.fillStyle=body;
+  ctx.beginPath(); ctx.ellipse(cx,cy+s*0.18,s*0.32,s*0.28,0,0,Math.PI*2); ctx.fill();
+
+  // head
+  ctx.beginPath(); ctx.arc(cx,cy,s*0.25,0,Math.PI*2); ctx.fill();
+
+  // floppy ears
+  ctx.beginPath(); ctx.ellipse(cx-s*0.26,cy,s*0.10,s*0.18,0.2,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+s*0.26,cy,s*0.10,s*0.18,-0.2,0,Math.PI*2); ctx.fill();
+
+  // snout
+  ctx.fillStyle = mood==='dead'?'#3a3020':'#c09040';
+  ctx.beginPath(); ctx.ellipse(cx,cy+s*0.08,s*0.12,s*0.09,0,0,Math.PI*2); ctx.fill();
+
+  // nose
+  ctx.fillStyle = mood==='dead'?'#222':'#1a1a1a';
+  ctx.beginPath(); ctx.ellipse(cx,cy+s*0.02,s*0.05,s*0.04,0,0,Math.PI*2); ctx.fill();
+
+  _drawFace(ctx, cx, cy-s*0.04, s*0.85, mood, 'dog');
+}
+
+/* ── BUNNY ── */
+function drawBunny(ctx, cx, cy, sz, mood) {
+  const s = sz;
+  const body = mood==='dead'?'#3a3a3a':mood==='happy'?'#e8e0f8':mood==='worried'?'#c8c0e0':'#a8a0c8';
+
+  // body
+  ctx.fillStyle=body;
+  ctx.beginPath(); ctx.ellipse(cx,cy+s*0.22,s*0.28,s*0.30,0,0,Math.PI*2); ctx.fill();
+
+  // tall ears
+  ctx.beginPath(); ctx.ellipse(cx-s*0.13,cy-s*0.24,s*0.08,s*0.22,-0.1,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+s*0.13,cy-s*0.24,s*0.08,s*0.22, 0.1,0,Math.PI*2); ctx.fill();
+
+  // inner ears
+  ctx.fillStyle = mood==='dead'?'#555':'#f0a0c0';
+  ctx.beginPath(); ctx.ellipse(cx-s*0.13,cy-s*0.24,s*0.04,s*0.16,-0.1,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+s*0.13,cy-s*0.24,s*0.04,s*0.16, 0.1,0,Math.PI*2); ctx.fill();
+
+  // head
+  ctx.fillStyle=body;
+  ctx.beginPath(); ctx.arc(cx,cy,s*0.22,0,Math.PI*2); ctx.fill();
+
+  // tail
+  ctx.fillStyle = mood==='dead'?'#444':body;
+  ctx.beginPath(); ctx.arc(cx+s*0.28,cy+s*0.30,s*0.07,0,Math.PI*2); ctx.fill();
+
+  // nose
+  ctx.fillStyle = mood==='dead'?'#333':'#f09090';
+  ctx.beginPath(); ctx.ellipse(cx,cy+s*0.06,s*0.04,s*0.03,0,0,Math.PI*2); ctx.fill();
+
+  _drawFace(ctx, cx, cy-s*0.02, s*0.90, mood, 'bunny');
 }
 
 /* ── SHARED FACE ── */
 function _drawFace(ctx, cx, cy, s, mood, type) {
-  const eyeY = cy; 
-
-  // Bochechas coradas
+  // cheeks (not on dead)
   if (mood!=='dead') {
-    ctx.fillStyle='rgba(251, 113, 133, 0.25)'; // rosinha sutil
-    ctx.beginPath(); ctx.ellipse(cx-s*0.15,eyeY+s*0.06,s*0.07,s*0.04,0,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(cx+s*0.15,eyeY+s*0.06,s*0.07,s*0.04,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='rgba(255,160,160,0.25)';
+    ctx.beginPath(); ctx.ellipse(cx-s*0.14,cy+s*0.05,s*0.08,s*0.05,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(cx+s*0.14,cy+s*0.05,s*0.08,s*0.05,0,0,Math.PI*2); ctx.fill();
   }
 
-  const eyeColor = mood==='dead'?'#64748b':'#334155';
-
+  const eyeY = cy - s*0.04;
   if (mood==='dead') {
-    ctx.strokeStyle=eyeColor; ctx.lineWidth=s*0.035; ctx.lineCap='round';
-    [[cx-s*0.12,eyeY],[cx+s*0.12,eyeY]].forEach(([ex,ey])=>{
+    // X eyes
+    ctx.strokeStyle='rgba(255,255,255,0.3)'; ctx.lineWidth=s*0.025; ctx.lineCap='round';
+    [[cx-s*0.10,eyeY],[cx+s*0.10,eyeY]].forEach(([ex,ey])=>{
       ctx.beginPath(); ctx.moveTo(ex-s*0.05,ey-s*0.05); ctx.lineTo(ex+s*0.05,ey+s*0.05); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(ex+s*0.05,ey-s*0.05); ctx.lineTo(ex-s*0.05,ey+s*0.05); ctx.stroke();
     });
   } else if (mood==='happy') {
-    ctx.fillStyle=eyeColor;
-    ctx.beginPath(); ctx.arc(cx-s*0.12,eyeY,s*0.06,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx+s*0.12,eyeY,s*0.06,0,Math.PI*2); ctx.fill();
-    
-    // brilho fofinho
-    ctx.fillStyle='#ffffff'; 
-    ctx.beginPath(); ctx.arc(cx-s*0.14,eyeY-s*0.02,s*0.02,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx+s*0.10,eyeY-s*0.02,s*0.02,0,Math.PI*2); ctx.fill();
+    // arc eyes
+    ctx.strokeStyle='rgba(255,255,255,0.9)'; ctx.lineWidth=s*0.03; ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(cx-s*0.10,eyeY+s*0.02,s*0.05,Math.PI,0); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx+s*0.10,eyeY+s*0.02,s*0.05,Math.PI,0); ctx.stroke();
   } else if (mood==='worried') {
-    ctx.fillStyle=eyeColor;
-    ctx.beginPath(); ctx.arc(cx-s*0.12,eyeY,s*0.05,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx+s*0.12,eyeY,s*0.05,0,Math.PI*2); ctx.fill();
-    
-    ctx.fillStyle='#ffffff';
-    ctx.beginPath(); ctx.arc(cx-s*0.14,eyeY-s*0.015,s*0.015,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx+s*0.10,eyeY-s*0.015,s*0.015,0,Math.PI*2); ctx.fill();
-
-    ctx.strokeStyle=eyeColor; ctx.lineWidth=s*0.025; ctx.lineCap='round';
-    ctx.beginPath(); ctx.moveTo(cx-s*0.18,eyeY-s*0.08); ctx.lineTo(cx-s*0.08,eyeY-s*0.05); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx+s*0.18,eyeY-s*0.08); ctx.lineTo(cx+s*0.08,eyeY-s*0.05); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.8)';
+    ctx.beginPath(); ctx.arc(cx-s*0.10,eyeY,s*0.045,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+s*0.10,eyeY,s*0.045,0,Math.PI*2); ctx.fill();
+    // worried brows
+    ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=s*0.025;
+    ctx.beginPath(); ctx.moveTo(cx-s*0.15,eyeY-s*0.07); ctx.lineTo(cx-s*0.06,eyeY-s*0.05); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx+s*0.15,eyeY-s*0.05); ctx.lineTo(cx+s*0.06,eyeY-s*0.07); ctx.stroke();
   } else {
-    // dying
-    ctx.fillStyle=eyeColor;
-    ctx.beginPath(); ctx.arc(cx-s*0.12,eyeY,s*0.05,0,Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.arc(cx+s*0.12,eyeY,s*0.05,0,Math.PI*2); ctx.fill();
-    
-    const skinColor = type==='bird'?'#f1f5f9':type==='horse'?'#d97706':'#2dd4bf';
-    ctx.fillStyle = skinColor;
-    ctx.beginPath(); ctx.rect(cx-s*0.2,eyeY-s*0.06,s*0.4,s*0.06); ctx.fill(); 
+    // dying — heavy-lidded
+    ctx.fillStyle='rgba(255,255,255,0.4)';
+    ctx.beginPath(); ctx.arc(cx-s*0.10,eyeY,s*0.04,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+s*0.10,eyeY,s*0.04,0,Math.PI*2); ctx.fill();
   }
 
-  // O Pássaro e o Ornitorrinco já possuem bicos próprios, então pulamos a boquinha padrão.
-  // Somente o cavalo ganha o risco de boca.
-  if (type !== 'platypus' && type !== 'bird') {
-    ctx.strokeStyle=eyeColor; ctx.lineWidth=s*0.025; ctx.lineCap='round';
-    const mouthY = type==='horse' ? cy+s*0.26 : cy+s*0.14; // no cavalo, boca abaixo do focinho
-    
-    if (mood==='happy') {
-      ctx.beginPath();
-      ctx.moveTo(cx-s*0.08,mouthY-s*0.02);
-      ctx.quadraticCurveTo(cx-s*0.04,mouthY+s*0.04,cx,mouthY);
-      ctx.quadraticCurveTo(cx+s*0.04,mouthY+s*0.04,cx+s*0.08,mouthY-s*0.02);
-      ctx.stroke();
-    } else if (mood==='worried') {
-      ctx.beginPath(); ctx.moveTo(cx-s*0.05,mouthY+s*0.02); ctx.lineTo(cx+s*0.05,mouthY+s*0.02); ctx.stroke();
-    } else if (mood==='dying') {
-      ctx.beginPath(); ctx.moveTo(cx-s*0.06,mouthY+s*0.04); ctx.quadraticCurveTo(cx,mouthY,cx+s*0.06,mouthY+s*0.04); ctx.stroke();
-    } else {
-      ctx.beginPath(); ctx.moveTo(cx-s*0.06,mouthY); ctx.quadraticCurveTo(cx,mouthY+s*0.04,cx+s*0.06,mouthY); ctx.stroke();
-    }
+  // mouth
+  ctx.strokeStyle='rgba(255,255,255,0.5)'; ctx.lineWidth=s*0.022; ctx.lineCap='round';
+  const mouthY = type==='dog' ? cy+s*0.06 : cy+s*0.10;
+  if (mood==='happy') {
+    ctx.beginPath(); ctx.moveTo(cx-s*0.09,mouthY); ctx.quadraticCurveTo(cx,mouthY+s*0.07,cx+s*0.09,mouthY); ctx.stroke();
+  } else if (mood==='worried') {
+    ctx.beginPath(); ctx.moveTo(cx-s*0.07,mouthY+s*0.02); ctx.lineTo(cx+s*0.07,mouthY+s*0.02); ctx.stroke();
+  } else if (mood==='dying') {
+    ctx.beginPath(); ctx.moveTo(cx-s*0.08,mouthY+s*0.04); ctx.quadraticCurveTo(cx,mouthY-s*0.02,cx+s*0.08,mouthY+s*0.04); ctx.stroke();
+  } else {
+    ctx.beginPath(); ctx.moveTo(cx-s*0.06,mouthY); ctx.quadraticCurveTo(cx,mouthY+s*0.05,cx+s*0.06,mouthY); ctx.stroke();
   }
 }
 
@@ -914,23 +875,25 @@ function renderPet(canvasEl, petType, health, dead, scaleFactor) {
   const ctx = canvasEl.getContext('2d');
   const w = canvasEl.width, h = canvasEl.height;
   ctx.clearRect(0, 0, w, h);
-  const cx = w/2, cy = h/2 - h*0.06;
-  const baseSz = Math.min(w, h) * 0.40;
+  const cx = w/2, cy = h/2 - h*0.04;
+  const baseSz = Math.min(w, h) * 0.42;
   const sz = baseSz * (scaleFactor || 1);
   const mood = getMood(health, dead);
 
+  // shadow
   if (!dead) {
-    ctx.fillStyle='rgba(15, 23, 42, 0.06)';
-    ctx.beginPath(); ctx.ellipse(cx, cy+sz*0.62, sz*0.42, sz*0.12, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle='rgba(124,106,247,0.08)';
+    ctx.beginPath(); ctx.ellipse(cx, cy+sz*0.58, sz*0.38, sz*0.10, 0, 0, Math.PI*2); ctx.fill();
   }
 
-  if      (petType==='platypus') drawPlatypus(ctx, cx, cy, sz, mood);
-  else if (petType==='horse')    drawHorse   (ctx, cx, cy, sz, mood);
-  else if (petType==='bird')     drawBird    (ctx, cx, cy, sz, mood);
+  if      (petType==='cat')   drawCat  (ctx, cx, cy, sz, mood);
+  else if (petType==='dog')   drawDog  (ctx, cx, cy, sz, mood);
+  else if (petType==='bunny') drawBunny(ctx, cx, cy, sz, mood);
 }
 
 // Draw previews in picker
-function drawPreviews() {['platypus','horse','bird'].forEach(p => {
+function drawPreviews() {
+  ['cat','dog','bunny'].forEach(p => {
     const c = document.getElementById(`preview-${p}`);
     if (c) renderPet(c, p, 100, false, 1);
   });
@@ -987,13 +950,16 @@ function updateUI() {
   const rem = daysRemaining();
   const evo = getEvoStage(st.streak);
 
+  // pet canvas
   const mainCanvas = document.getElementById('petCanvas');
   renderPet(mainCanvas, cfg.petType, h, st.dead, evo.scale);
   mainCanvas.classList.toggle('dead', st.dead);
 
+  // aura
   const stage = document.getElementById('pet-stage');
   stage.classList.toggle('has-aura', st.streak >= 6 && !st.dead);
 
+  // pet card glow
   const card = document.getElementById('pet-card');
   card.classList.remove('danger','warn');
   if (!st.dead) {
@@ -1001,17 +967,21 @@ function updateUI() {
     else if (h<=65) card.classList.add('warn');
   }
 
+  // name + evo badge
   document.getElementById('pet-name').textContent   = PET_NAMES[cfg.petType] || '—';
   document.getElementById('evo-badge').textContent  = evo.label;
 
+  // life bar
   const bar = document.getElementById('life-bar');
   bar.style.width      = Math.max(0,h)+'%';
   bar.style.background = h>65?'var(--green)':h>35?'var(--amber)':'var(--red)';
   document.getElementById('life-hint').textContent  =
     st.dead ? 'pet faleceu' : `vida: ${Math.round(h)}%`;
 
+  // dead overlay
   document.getElementById('dead-overlay').classList.toggle('visible', st.dead);
 
+  // goal strip
   const pct = Math.min(100, (st.fedAmountMonth/cfg.monthlyGoal)*100);
   const gb  = document.getElementById('goal-bar');
   gb.style.width      = pct.toFixed(1)+'%';
@@ -1021,10 +991,12 @@ function updateUI() {
   document.getElementById('goal-days').textContent =
     `${rem} dia${rem!==1?'s':''} restante${rem!==1?'s':''}`;
 
+  // stats
   document.getElementById('stat-saldo').textContent  = 'R$'+Math.round(st.balance);
   document.getElementById('stat-streak').textContent = st.streak;
   document.getElementById('stat-dias').textContent   = rem;
 
+  // month chip
   const chip = document.getElementById('month-chip');
   if (st.fedThisMonth) {
     chip.textContent = `R$${Math.round(st.fedAmountMonth)} validado este mês`;
@@ -1034,6 +1006,7 @@ function updateUI() {
     chip.className   = 'month-chip';
   }
 
+  // header sub
   document.getElementById('header-sub').textContent =
     `guarde R$${Math.round(cfg.monthlyGoal)} em ${new Date().toLocaleString('pt-BR',{month:'long'})} ou ${PET_NAMES[cfg.petType]||'seu pet'} morre`;
 
@@ -1060,6 +1033,7 @@ function updateCalendar() {
     const dot = document.createElement('div');
     dot.className = 'cal-dot';
     if (i < today) {
+      // past day — did user feed on this day?
       dot.classList.add(st.feedDays.includes(i) ? 'fed' : 'unfed');
     } else if (i === today) {
       dot.classList.add(st.feedDays.includes(i) ? 'fed' : 'today');
@@ -1117,10 +1091,13 @@ function onDrop(e) {
   if (f&&f.type==='application/pdf') loadPdf(f); else showToast('apenas PDF');
 }
 function onFileChange(e) { const f=e.target.files?.[0]; if(f) loadPdf(f); }
+let uploadedFileType = null;
+
 function loadPdf(file) {
   const r=new FileReader();
   r.onload=e=>{
     pdfB64=e.target.result.split(',')[1];
+    uploadedFileType = file.type;
     document.getElementById('pdf-drop').style.display='none';
     document.getElementById('pdf-selected').classList.add('visible');
     document.getElementById('pdf-file-name').textContent=file.name;
@@ -1130,7 +1107,7 @@ function loadPdf(file) {
   r.readAsDataURL(file);
 }
 function clearPdf() {
-  pdfB64=null;
+  pdfB64=null; uploadedFileType=null;
   document.getElementById('pdf-drop').style.display='';
   document.getElementById('pdf-selected').classList.remove('visible');
   document.getElementById('verify-result').className='verify-result';
@@ -1139,38 +1116,32 @@ function clearPdf() {
 }
 
 // ════════════════════════════════════════
-// VERIFY PDF (CORRIGIDO PARA MOSTRAR ERROS)
+// VERIFY PDF
 // ════════════════════════════════════════
 async function verifyPdf() {
   if (st.dead)  { showToast('ressuscite o pet primeiro'); return; }
   if (!pdfB64)  { showToast('selecione um PDF'); return; }
 
-  const btn = document.getElementById('btn-verify');
-  btn.textContent = 'verificando…'; 
-  btn.disabled = true;
+  const btn=document.getElementById('btn-verify');
+  btn.textContent='verificando…'; btn.disabled=true;
 
-  const box = document.getElementById('verify-result');
-  box.className = 'verify-result';
+  const box=document.getElementById('verify-result');
+  box.className='verify-result';
 
   try {
     const res = await fetch('/api/ai', {
-      method: 'POST', 
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ mode: 'verify_pdf', pdf: pdfB64, expectedMin: cfg.monthlyGoal }),
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(
+        uploadedFileType === 'application/pdf'
+          ? { mode:'verify_pdf', pdf:pdfB64, expectedMin:cfg.monthlyGoal }
+          : { mode:'verify_pdf', image:pdfB64, imageType:uploadedFileType, expectedMin:cfg.monthlyGoal }
+      ),
     });
-    
-    // Se a Vercel der erro 500 (falta de API KEY, por exemplo), capturamos aqui:
-    if (!res.ok) {
-      throw new Error(`Erro do Servidor (Vercel): Código ${res.status}`);
-    }
-
     const data = await res.json();
-    
-    // AJUSTE PRINCIPAL: Se não vier 'message', ele pega o 'error' ou dá um aviso padrão.
-    box.textContent = data.message || data.error || 'A IA recusou este comprovante ou o arquivo está ilegível.';
+    box.textContent = data.message;
 
     if (data.verified && data.amount) {
-      box.className = 'verify-result visible ok';
+      box.className='verify-result visible ok';
       const val = data.amount;
       st.balance         += val;
       st.fedAmountMonth  += val;
@@ -1188,21 +1159,18 @@ async function verifyPdf() {
       }
       persist(); updateUI(); fetchBubble('deposit'); clearPdf();
 
-    } else if (data.amount !== null && data.amount !== undefined && data.amount < cfg.monthlyGoal) {
-      box.className = 'verify-result visible warn';
+    } else if (data.amount !== null && data.amount < cfg.monthlyGoal) {
+      box.className='verify-result visible warn';
       persist(); fetchBubble('deposit_below_min');
     } else {
-      box.className = 'verify-result visible err';
+      box.className='verify-result visible err';
       fetchBubble('deposit_rejected');
     }
-    
-  } catch (err) {
-    // Agora, se a sua IA falhar internamente, você verá o erro em texto!
-    console.error("Erro na verificação:", err);
-    box.textContent = 'Erro ao se conectar com a IA. Verifique os Logs (Functions) no painel da Vercel.';
-    box.className = 'verify-result visible err';
+  } catch {
+    box.textContent='Erro ao verificar. Tente novamente.';
+    box.className='verify-result visible err';
   } finally {
-    btn.textContent = 'verificar e alimentar';
+    btn.textContent='verificar e alimentar';
     btn.disabled = !pdfB64;
   }
 }
@@ -1237,6 +1205,7 @@ function initApp() {
   updateUI();
   fetchBubble('start');
   setInterval(updateLockBtn, 60_000);
+  // refresh calendar at midnight
   const now=new Date();
   const msToMidnight=(new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now);
   setTimeout(()=>{ updateUI(); setInterval(updateUI,86_400_000); }, msToMidnight);
@@ -1245,9 +1214,11 @@ function initApp() {
 drawPreviews();
 
 if (cfg.petType) {
+  // returning user — skip picker
   document.getElementById('avatar-picker').classList.add('hidden');
   initApp();
 } else {
+  // first visit — show picker, draw previews
   document.getElementById('avatar-picker').classList.remove('hidden');
 }
 </script>
