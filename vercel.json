@@ -1,5 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/api/ai", "destination": "/api/ai.js" }
-  ]
+  "functions": {
+    "api/ai.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }
