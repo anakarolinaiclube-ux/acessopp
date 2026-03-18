@@ -18,12 +18,24 @@ module.exports = async function handler(req, res) {
 
   const mode = body.mode || "pet_reaction";
 
-  // ── MODO 1: VERIFICAR PDF ──────────────────────────────────────────
+  // ── MODO 1: VERIFICAR COMPROVANTE (PDF ou imagem) ──────────────────
   if (mode === "verify_pdf") {
-    const { pdf, expectedMin = 30 } = body;
-    if (!pdf) return res.status(400).json({ error: "Campo obrigatorio: pdf (base64)" });
+    const { pdf, image, imageType, expectedMin = 30 } = body;
 
-    const prompt = "Voce eh um analisador de extratos bancarios brasileiros. Analise o PDF e responda APENAS com JSON valido, sem markdown. Procure depositos em poupanca, transferencias PIX para conta propria ou qualquer movimentacao que indique que o usuario guardou dinheiro. Formato: {\"found\": true ou false, \"amount\": numero em reais ou null, \"description\": \"descricao curta\" ou null, \"confidence\": \"high\" ou \"medium\" ou \"low\"}. Se nao for extrato bancario: found=false. Valor minimo esperado: R$ " + expectedMin + ".";
+    if (!pdf && !image) {
+      return res.status(400).json({ error: "Envie pdf ou image em base64" });
+    }
+
+    const prompt = "Voce eh um analisador de comprovantes e extratos bancarios brasileiros. Analise o documento e responda APENAS com JSON valido sem markdown. Procure: depositos em poupanca, transferencias PIX para conta propria, qualquer movimentacao que indique que o usuario GUARDOU dinheiro (nao compras ou gastos). Formato obrigatorio: {\"found\": true ou false, \"amount\": numero em reais ou null, \"description\": \"descricao curta\" ou null, \"confidence\": \"high\" ou \"medium\" ou \"low\"}. Se nao for comprovante bancario: found=false. Confidence low = ilegivel ou muito incerto. Valor minimo esperado: R$ " + expectedMin;
+
+    // monta o content dependendo do tipo de arquivo
+    let contentSource;
+    if (pdf) {
+      contentSource = { type: "document", source: { type: "base64", media_type: "application/pdf", data: pdf } };
+    } else {
+      const mime = imageType || "image/jpeg";
+      contentSource = { type: "image", source: { type: "base64", media_type: mime, data: image } };
+    }
 
     try {
       const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -35,11 +47,11 @@ module.exports = async function handler(req, res) {
         },
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
-          max_tokens: 256,
+          max_tokens: 300,
           messages: [{
             role: "user",
             content: [
-              { type: "document", source: { type: "base64", media_type: "application/pdf", data: pdf } },
+              contentSource,
               { type: "text", text: prompt }
             ]
           }]
@@ -48,76 +60,84 @@ module.exports = async function handler(req, res) {
 
       if (!response.ok) {
         const err = await response.text();
-        console.error("Anthropic PDF error:", err);
-        return res.status(502).json({ error: "Erro na API da Anthropic: " + err.slice(0, 200) });
+        console.error("Anthropic error verify:", err);
+        return res.status(502).json({ error: "Erro Anthropic: " + err.slice(0, 300) });
       }
 
       const data = await response.json();
       const raw = (data?.content?.[0]?.text ?? "{}").replace(/```json|```/g, "").trim();
 
       let parsed;
-      try { parsed = JSON.parse(raw); }
-      catch {
-        console.error("JSON parse error:", raw);
-        return res.status(200).json({ verified: false, amount: null, message: "Nao consegui ler o documento. Tente um PDF mais nitido." });
+      try {
+        parsed = JSON.parse(raw);
+      } catch {
+        console.error("JSON parse fail:", raw);
+        return res.status(200).json({
+          verified: false, amount: null,
+          message: "Nao consegui ler o comprovante. Tente uma imagem mais nitida."
+        });
       }
 
-      const verified = parsed.found === true && typeof parsed.amount === "number" && parsed.amount >= expectedMin && parsed.confidence !== "low";
+      const verified =
+        parsed.found === true &&
+        typeof parsed.amount === "number" &&
+        parsed.amount >= expectedMin &&
+        parsed.confidence !== "low";
 
       let message;
       if (verified) {
         message = "Comprovante aceito! " + (parsed.description || "Deposito de R$" + parsed.amount.toFixed(2) + " identificado.");
       } else if (parsed.found && typeof parsed.amount === "number" && parsed.amount < expectedMin) {
-        message = "Encontrei R$" + parsed.amount.toFixed(2) + ", mas a meta minima e R$" + expectedMin + ". Preciso de mais!";
+        message = "Encontrei R$" + parsed.amount.toFixed(2) + ", mas a meta minima e R$" + expectedMin + ". Guarde mais!";
       } else {
-        message = "Nao encontrei nenhum deposito ou poupanca valida neste documento.";
+        message = "Nao encontrei deposito ou poupanca valida neste comprovante.";
       }
 
-      return res.status(200).json({ verified, amount: parsed.found ? parsed.amount : null, description: parsed.description || null, confidence: parsed.confidence || null, message });
+      return res.status(200).json({
+        verified,
+        amount: parsed.found ? parsed.amount : null,
+        description: parsed.description || null,
+        confidence: parsed.confidence || null,
+        message
+      });
 
     } catch (err) {
-      console.error("Fetch error verify_pdf:", err);
+      console.error("Fetch error verify:", err.message);
       return res.status(500).json({ error: "Erro interno: " + err.message });
     }
   }
 
   // ── MODO 2: FALA DO PET ────────────────────────────────────────────
-  const { health, balance, streak, daysLeft, event, monthlyGoal, fedThisMonth, petType } = body;
-  if (health === undefined || balance === undefined) {
-    return res.status(400).json({ error: "health e balance sao obrigatorios" });
-  }
+  const { health = 100, balance = 0, streak = 0, daysLeft = 30,
+          event = "none", monthlyGoal = 30, fedThisMonth = 0, petType = "cat" } = body;
 
-  const goal = monthlyGoal || 30;
-  const fed  = fedThisMonth || 0;
   const petNames = { cat: "Mingau", dog: "Farofa", bunny: "Bolinha" };
-  const petName  = petNames[petType] || "Poupinzinho";
-  const petDesc  = petType === "cat" ? "gato" : petType === "dog" ? "cachorro" : petType === "bunny" ? "coelho" : "pet";
+  const petDesc  = { cat: "gato", dog: "cachorro", bunny: "coelho" };
+  const name = petNames[petType] || "Poupinzinho";
+  const desc = petDesc[petType]  || "pet";
 
-  const eventMap = {
-    start:               "o app acabou de abrir",
-    deposit:             "o dono depositou com comprovante VALIDADO - celebre!",
-    deposit_rejected:    "o comprovante foi REJEITADO - nao era deposito de poupanca",
-    deposit_below_min:   "comprovante valido mas valor abaixo da meta",
-    month_passed_no_feed:"o mes virou e o dono NAO bateu a meta - crise total",
-    month_passed_fed:    "o mes virou e o dono bateu a meta - celebracao",
-    goal_changed:        "o dono atualizou a meta mensal",
-    revive:              "o pet foi ressuscitado",
+  const events = {
+    start:               "app abriu",
+    deposit:             "dono depositou com comprovante VALIDADO - comemore!",
+    deposit_rejected:    "comprovante REJEITADO - nao era poupanca valida",
+    deposit_below_min:   "comprovante ok mas valor abaixo da meta",
+    month_passed_no_feed:"mes virou sem meta batida - CRISE",
+    month_passed_fed:    "mes virou com meta batida - celebracao",
+    goal_changed:        "meta atualizada",
+    revive:              "pet ressuscitado",
   };
 
-  const eventDesc = eventMap[event] || event || "nenhum evento";
-  const isDrama   = ["deposit_rejected", "deposit_below_min", "month_passed_no_feed"].includes(event);
+  const isDrama = ["deposit_rejected", "deposit_below_min", "month_passed_no_feed"].includes(event);
 
-  const lines = [
-    "Voce e " + petName + ", um " + petDesc + " virtual fofo e dramatico de um app de poupanca.",
-    "Fale na primeira pessoa.",
-    "",
-    "Estado: Vida=" + health + "%, Saldo=R$" + Number(balance).toFixed(2) + ", Meta=R$" + goal + " (guardado este mes: R$" + Number(fed).toFixed(2) + "), Sequencia=" + streak + " meses, Dias restantes=" + daysLeft,
-    "Evento: " + eventDesc,
-    "",
-    isDrama ? "DRAMA MAXIMO: chore, implore, faca cena de novela. Use MAIUSCULAS e reticencias." : "",
-    "",
-    "Responda com 1 a 2 frases curtas em portugues brasileiro informal. Criativo e engracado. Sem hashtags."
-  ].filter(l => l !== undefined).join("\n");
+  const prompt = [
+    "Voce e " + name + ", um " + desc + " virtual fofo e dramatico de um app de poupanca. Fale na primeira pessoa.",
+    "Vida=" + Math.round(health) + "%, Saldo=R$" + Number(balance).toFixed(2) +
+      ", Meta=R$" + monthlyGoal + ", Guardado este mes=R$" + Number(fedThisMonth).toFixed(2) +
+      ", Sequencia=" + streak + " meses, Dias restantes=" + daysLeft + ".",
+    "Evento: " + (events[event] || event),
+    isDrama ? "INSTRUCAO: Drama maximo! MAIUSCULAS, reticencias, apelos emotivos." : "",
+    "Responda com 1-2 frases curtas em portugues informal. Criativo e engracado. Sem hashtags."
+  ].filter(Boolean).join(" ");
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -130,21 +150,21 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
         max_tokens: 140,
-        messages: [{ role: "user", content: lines }]
+        messages: [{ role: "user", content: prompt }]
       }),
     });
 
     if (!response.ok) {
       const err = await response.text();
-      console.error("Anthropic pet error:", err);
-      return res.status(502).json({ error: "Erro na API da Anthropic: " + err.slice(0, 200) });
+      console.error("Anthropic error pet:", err);
+      return res.status(502).json({ error: "Erro Anthropic: " + err.slice(0, 300) });
     }
 
     const data = await response.json();
     return res.status(200).json({ message: data?.content?.[0]?.text?.trim() || "..." });
 
   } catch (err) {
-    console.error("Fetch error pet_reaction:", err);
+    console.error("Fetch error pet:", err.message);
     return res.status(500).json({ error: "Erro interno: " + err.message });
   }
 };
